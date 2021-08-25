@@ -16,7 +16,7 @@ allprojects {
 
 ```
 //maven
-implementation 'com.github.liouyang:downLib:v1.0'
+implementation 'com.github.liouyang:downLib:v1.1'
 ```
 
 

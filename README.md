@@ -4,6 +4,23 @@
 一个简单下载file 以及APK
 ```
 
+```
+//项目下的build.gradle 添加
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+      	...
+    }
+}
+```
+
+```
+//maven
+implementation 'com.github.liouyang:downLib:v1.0'
+```
+
+
+
 #### for Java Writing
 
 ```

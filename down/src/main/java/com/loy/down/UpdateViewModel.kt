@@ -50,9 +50,9 @@ class UpdateViewModel(application: Application) : AutoDisposeAndroidViewModel(ap
     // 下载apk的进度
     val progressLiveData = MutableLiveData<Int>()
 
-    val onCompletLiveData = MutableLiveData<Int>()
+    val onCompletLiveData = MutableLiveData<File>()
 
-    val onErrorLiveData = MutableLiveData<Int>()
+    val onErrorLiveData = MutableLiveData<Throwable>()
 
     private val receiver by lazy {
         return@lazy object : BroadcastReceiver() {
@@ -185,17 +185,19 @@ class UpdateViewModel(application: Application) : AutoDisposeAndroidViewModel(ap
 
 
     /**
-     * 开始下载
-     * @param fileUrl 下载地址
+     *
+     * @param fileUrl String 地址
+     * @param filePath String 路径
+     * @param fileName String 文件名
      */
-    fun startDownload(fileUrl: String, fileName: String) {
+    fun startDownload(fileUrl: String, filePath: String, fileName: String) {
         DownLoadService.createApiService(DownLoadApi::class.java)
             .download(fileUrl)
             .map {
                 val fileSize = it.contentLength()
                 //写入文件
                 return@map writeFile(
-                    getApplication<Application>().apkRootPath(),
+                    filePath,
                     fileName,
                     it,
                     fileSize
@@ -207,9 +209,9 @@ class UpdateViewModel(application: Application) : AutoDisposeAndroidViewModel(ap
             .defaultScheduler()
             .autoDispose(this)
             .subscribe({
-                onCompletLiveData.value = 101
+                onCompletLiveData.value = it
             }, {
-                onErrorLiveData.value = -1
+                onErrorLiveData.value = it
             })
     }
 
